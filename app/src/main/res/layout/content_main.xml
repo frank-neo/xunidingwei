@@ -48,7 +48,6 @@
         android:layout_marginTop="89dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
         app:layout_constraintStart_toEndOf="@+id/textView1"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,8 +59,79 @@
         android:layout_marginTop="128dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
         app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/get_now_xy"
+        android:layout_width="293dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="256dp"
+        android:text="获取当前坐标"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/save_xy"
+        android:layout_width="290dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="310dp"
+        android:text="保存当前坐标"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="212dp"
+        android:layout_height="185dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/save_xy">
+
+        <RadioButton
+            android:id="@+id/radioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="41dp"
+            android:text="RadioButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/save_xy" />
+
+        <RadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="13dp"
+            android:text="RadioButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioButton" />
+
+        <RadioButton
+            android:id="@+id/radioButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="15dp"
+            android:text="RadioButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioButton2" />
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/start_position"
+        android:layout_width="298dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="18dp"
+        android:text="一键开启定位修改"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
