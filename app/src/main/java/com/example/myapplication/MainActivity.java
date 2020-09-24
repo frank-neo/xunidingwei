@@ -1,14 +1,19 @@
 package com.example.myapplication;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.RemoteAction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import com.example.myapplication.reactaction.ReactClazz;
+import com.example.myapplication.unit.GPSUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -21,10 +26,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private static final int LOCATION_CODE = 1;
     private LocationManager lm;//位置管理
+    //操作响应类实例化
+    private ReactClazz reactClazz = new ReactClazz();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +51,13 @@ public class MainActivity extends AppCompatActivity {
 
         // 定位权限申请
         GPSQunaxian();
+
+//        Location location = GPSUtils.getInstance( MainActivity.this ).showLocation();
+//        if (location != null) {
+//            String address = "纬度：" + location.getLatitude() + "经度：" + location.getLongitude();
+//            Log.d( "kly",address );
+//            Toast.makeText(MyApplication.getContext(),address,Toast.LENGTH_SHORT).show();
+//        }
     }
 
     @Override
@@ -70,15 +84,15 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     *  定位权限申请
+     * 定位权限申请
      */
-    public void GPSQunaxian(){
+    public void GPSQunaxian() {
         lm = (LocationManager) MainActivity.this.getSystemService(MainActivity.this.LOCATION_SERVICE);
         boolean ok = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
         if (ok) {//开了定位服务
             if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
-                Log.d("kly","没有权限");
+                Log.d("kly", "没有权限");
                 // 没有权限，申请权限。
                 // 申请授权。
                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_CODE);
@@ -89,11 +103,52 @@ public class MainActivity extends AppCompatActivity {
                 //Toast.makeText(getActivity(), "有权限", Toast.LENGTH_SHORT).show();
             }
         } else {
-            Log.d("kly","d系统检测到未开启GPS定位服务");
+            Log.d("kly", "d系统检测到未开启GPS定位服务");
             Toast.makeText(MainActivity.this, "系统检测到未开启GPS定位服务", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent();
             intent.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             startActivityForResult(intent, 1315);
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case LOCATION_CODE: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // 权限被用户同意。
+
+                } else {
+                    // 权限被用户拒绝了。
+                    Toast.makeText(MainActivity.this, "定位权限被禁止，相关地图功能无法使用！", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //程序退出，我们移除位置监听事件
+        GPSUtils.getInstance(this).removeLocationUpdatesListener();
+    }
+
+
+
+    //重写了点击事件处理
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId()) {
+            case R.id.get_now_xy:
+                reactClazz.getNowXy(view);
+                break;
+            default:
+                break;
+        }
+
+    }
+
 }
