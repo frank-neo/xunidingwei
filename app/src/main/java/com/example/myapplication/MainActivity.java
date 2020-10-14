@@ -1,10 +1,9 @@
 package com.example.myapplication;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.RemoteAction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 
@@ -24,14 +23,18 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int LOCATION_CODE = 1;
     private LocationManager lm;//位置管理
     //操作响应类实例化
     private ReactClazz reactClazz = new ReactClazz();
+
+//    //位置信息
+//    Location location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +54,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // 定位权限申请
         GPSQunaxian();
+//        location = GPSUtils.getInstance(MainActivity.this).showLocation();
 
-//        Location location = GPSUtils.getInstance( MainActivity.this ).showLocation();
-//        if (location != null) {
-//            String address = "纬度：" + location.getLatitude() + "经度：" + location.getLongitude();
-//            Log.d( "kly",address );
-//            Toast.makeText(MyApplication.getContext(),address,Toast.LENGTH_SHORT).show();
-//        }
+
+        //重写的监听事件必须到onCreate方案中注册才可生效
+        Button bt3 = (Button) findViewById(R.id.get_now_xy);
+        bt3.setOnClickListener(this);
+
+        Location location = GPSUtils.getInstance( MainActivity.this ).showLocation();
+        if (location != null) {
+            String address = "纬度：" + location.getLatitude() + "经度：" + location.getLongitude();
+            Log.d( "kly",address );
+            Toast.makeText(MainActivity.this, address, Toast.LENGTH_SHORT).show();
+
+        }
     }
 
     @Override
@@ -136,19 +146,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
     //重写了点击事件处理
     @Override
-    public void onClick(View view) {
+    public void onClick(View v) {
 
-        switch (view.getId()) {
+        switch (v.getId()) {
             case R.id.get_now_xy:
-                reactClazz.getNowXy(view);
+                //reactClazz.getNowXy(findViewById(R.id.editText), location);
+                //Toast.makeText(MainActivity.this, "第四种点击事件：Activity继承View.OnClickListener，由Activity实现OnClick(View view)方法", Toast.LENGTH_SHORT).show();
                 break;
             default:
                 break;
         }
 
     }
-
 }
+
